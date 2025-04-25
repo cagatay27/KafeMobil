@@ -1,9 +1,13 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import {useCart} from '../../../context/CartContext';
 import CustomText from '../../atoms/Text/CustomText';
 import styles from './ProductCard.style';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCartPlus, faPlus } from '@fortawesome/free-solid-svg-icons';
+
+
 
 const ProductCard = ({product}) => {
   const {addToCart} = useCart();
@@ -16,9 +20,9 @@ const ProductCard = ({product}) => {
         <CustomText style={styles.price}>{product.price}₺</CustomText>
       </View>
       <TouchableOpacity
-        style={styles.addButton}
+       style={styles.addButton}
         onPress={() => addToCart(product)}>
-        <Icon name="add" size={24} color="#fff" />
+          <FontAwesomeIcon icon = {faCartPlus} size={18} color='white'></FontAwesomeIcon>
       </TouchableOpacity>
     </View>
   );

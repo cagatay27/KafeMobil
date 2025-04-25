@@ -9,10 +9,10 @@ const CategoryList = ({onSelectCategory}) => {
   const [selectedCategory, setSelectedCategory] = useState('KAHVE');
 
   const categories = [
-    {id: 'KAHVE', title: 'KAHVE', icon: 'coffee'},
-    {id: 'KURABİYE', title: 'KURABİYE', icon: 'cookie'},
-    {id: 'YEMEKLER', title: 'YEMEKLER', icon: 'utensils'},
-    {id: 'SOĞUK İÇECEKLER', title: 'SOĞUK İÇECEKLER', icon: 'glass-whiskey'},
+    {id: 'KAHVE', title: 'KAHVE'},
+    {id: 'KURABİYE', title: 'KURABİYE'},
+    {id: 'YEMEKLER', title: 'YEMEKLER'},
+    {id: 'SOĞUK İÇECEKLER', title: 'SOĞUK İÇECEKLER'},
   ];
 
   const handleSelect = categoryId => {

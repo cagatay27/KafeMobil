@@ -9,6 +9,8 @@ import HomeScreen from '../screens/HomeScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCartShopping, faHeart, faHouse, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,8 +28,8 @@ const AppNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="home-outline" size={size} color={color} />
+          tabBarIcon: ({color, size , focused}) => (
+            <FontAwesomeIcon icon={faHouse} size={24} color= {focused ? "brown" : "gray"}></FontAwesomeIcon>
           ),
         }}
       />
@@ -35,8 +37,8 @@ const AppNavigator = () => {
         name="Favorites"
         component={FavoritesScreen}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="heart-outline" size={size} color={color} />
+          tabBarIcon: ({color, size,focused}) => (
+            <FontAwesomeIcon icon={faHeart} size={24} color= {focused ? "brown" : "gray"}></FontAwesomeIcon>
           ),
         }}
       />
@@ -44,8 +46,8 @@ const AppNavigator = () => {
         name="Cart"
         component={CartScreen}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="cart-outline" size={size} color={color} />
+          tabBarIcon: ({color, size,focused}) => (
+            <FontAwesomeIcon icon={faCartShopping} size={24} color= {focused ? "brown" : "gray"}></FontAwesomeIcon>
           ),
         }}
       />
@@ -53,8 +55,8 @@ const AppNavigator = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="person-outline" size={size} color={color} />
+          tabBarIcon: ({color, size,focused}) => (
+            <FontAwesomeIcon icon={faUser} size={24} color= {focused ? "brown" : "gray"}></FontAwesomeIcon>
           ),
         }}
       />
