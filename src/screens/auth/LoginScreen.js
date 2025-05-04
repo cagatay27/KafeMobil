@@ -7,17 +7,32 @@ import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useAuth} from '../../context/AuthContext';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const {signIn} = useAuth();
 
-  const handleLogin = () => {
-    // Giriş işlemleri burada yapılacak
-    console.log('Login attempt with:', email, password);
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      return;
+    }
+    try {
+      setLoading(true);
+      await signIn(email, password);
+      navigation.replace('App');
+    } catch (error) {
+      Alert.alert('Hata', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,10 +49,10 @@ const LoginScreen = () => {
 
           <View style={styles.inputContainer}>
             <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>👤 Kullanıcı Adı</Text>
+              <Text style={styles.inputLabel}>📧 Mail Adresiniz</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Kullanıcı Adınızı Giriniz"
+                placeholder="Mail Adresinizi Giriniz"
                 placeholderTextColor="#8B4513"
                 value={email}
                 onChangeText={setEmail}
@@ -58,8 +73,13 @@ const LoginScreen = () => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>Giriş Yap</Text>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={handleLogin}
+            disabled={loading}>
+            <Text style={styles.loginButtonText}>
+              {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.forgotPassword}>

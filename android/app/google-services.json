@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "616262886686",
+    "project_id": "stok-urun",
+    "storage_bucket": "stok-urun.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616262886686:android:5f4e803e4b2c94bee7950f",
+        "android_client_info": {
+          "package_name": "com.kafetest3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALPm7cLXp9hAIBNvZ9M87PENK2b8jCa1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

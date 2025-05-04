@@ -4,8 +4,18 @@ import {COLORS} from '../styles/theme';
 import CustomText from '../components/atoms/Text/CustomText';
 import Button from '../components/atoms/Button/Button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useAuth} from '../context/AuthContext';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileScreen = () => {
+  const {user, signOut} = useAuth();
+  const navigation = useNavigation();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigation.replace('Auth');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -16,15 +26,15 @@ const ProfileScreen = () => {
         <View style={styles.profileInfo}>
           <Icon name="person-circle-outline" size={80} color={COLORS.primary} />
           <CustomText type="title" style={styles.userName}>
-            Kullanıcı
+            {user?.name || 'Kullanıcı'}
           </CustomText>
-          <CustomText>kullanici@email.com</CustomText>
+          <CustomText>{user?.email || ''}</CustomText>
         </View>
 
         <Button
           title="Çıkış Yap"
           type="secondary"
-          onPress={() => alert('Çıkış işlemi')}
+          onPress={handleSignOut}
           icon={
             <Icon
               name="log-out-outline"

@@ -5,21 +5,34 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
   SafeAreaView,
   ImageBackground,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useAuth} from '../../context/AuthContext';
 
-const RegisterScreen = () => {
-  const [name, setName] = useState('');
+const RegisterScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const navigation = useNavigation();
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const {signUp} = useAuth();
 
-  const handleRegister = () => {
-    // Kayıt işlemleri burada yapılacak
-    console.log('Register attempt with:', name, email, password);
+  const handleRegister = async () => {
+    if (!email || !password || !name) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await signUp(email, password, {name});
+      navigation.replace('App');
+    } catch (error) {
+      Alert.alert('Hata', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,20 +49,21 @@ const RegisterScreen = () => {
 
           <View style={styles.inputContainer}>
             <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>👤 İsim</Text>
+              <Text style={styles.inputLabel}>👤 Ad Soyad</Text>
               <TextInput
                 style={styles.input}
-                placeholder="İsminizi Giriniz"
+                placeholder="Ad Soyad"
                 placeholderTextColor="#8B4513"
                 value={name}
                 onChangeText={setName}
+                autoFocus
               />
             </View>
             <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>📧 Email</Text>
+              <Text style={styles.inputLabel}>📧 E-posta</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Mail Adresinizi Giriniz"
+                placeholder="E-posta"
                 placeholderTextColor="#8B4513"
                 value={email}
                 onChangeText={setEmail}
@@ -61,21 +75,10 @@ const RegisterScreen = () => {
               <Text style={styles.inputLabel}>🔒 Şifre</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Şifrenizi Giriniz"
+                placeholder="Şifre"
                 placeholderTextColor="#8B4513"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
-              />
-            </View>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>🔒 Şifreyi Doğrula</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Şifrenizi Doğrulayınız"
-                placeholderTextColor="#8B4513"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
                 secureTextEntry
               />
             </View>
@@ -83,8 +86,11 @@ const RegisterScreen = () => {
 
           <TouchableOpacity
             style={styles.registerButton}
-            onPress={handleRegister}>
-            <Text style={styles.registerButtonText}>Kayıt Ol</Text>
+            onPress={handleRegister}
+            disabled={loading}>
+            <Text style={styles.registerButtonText}>
+              {loading ? 'Kayıt Yapılıyor...' : 'Kayıt Ol'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
