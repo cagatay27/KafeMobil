@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, FlatList, SafeAreaView, StyleSheet} from 'react-native';
+import {View, FlatList, SafeAreaView, StyleSheet, Alert} from 'react-native';
 import {COLORS} from '../styles/theme';
 import {useCart} from '../context/CartContext';
 import CustomText from '../components/atoms/Text/CustomText';
 import Button from '../components/atoms/Button/Button';
+import {firestore} from '../config/firebase';
 
 const CartScreen = () => {
   const {cart, removeFromCart, clearCart} = useCart();
@@ -12,6 +13,40 @@ const CartScreen = () => {
     (sum, item) => sum + parseFloat(item.price) * item.quantity,
     0,
   );
+
+  const handleCompleteOrder = async () => {
+    try {
+      // Benzersiz bir sepet ID'si oluştur
+      const sepetId = firestore().collection('satislar').doc().id;
+      const tarih = new Date();
+
+      // Her ürün için satış kaydı oluştur
+      const satisPromises = cart.map(item => {
+        return firestore()
+          .collection('satislar')
+          .add({
+            adet: item.quantity,
+            fiyat: parseFloat(item.price),
+            id: item.id,
+            sepetId: sepetId,
+            tarih: tarih,
+            urun_adi: item.name,
+          });
+      });
+
+      // Tüm satış kayıtlarını oluştur
+      await Promise.all(satisPromises);
+
+      // Sepeti temizle
+      clearCart();
+      Alert.alert('Başarılı', 'Siparişiniz başarıyla tamamlandı!');
+    } catch (error) {
+      Alert.alert(
+        'Hata',
+        'Sipariş tamamlanırken bir hata oluştu: ' + error.message,
+      );
+    }
+  };
 
   const renderItem = ({item}) => (
     <View style={styles.cartItem}>
@@ -50,13 +85,7 @@ const CartScreen = () => {
               <CustomText type="subtitle">{totalPrice.toFixed(2)}₺</CustomText>
             </View>
 
-            <Button
-              title="Siparişi Tamamla"
-              onPress={() => {
-                clearCart();
-                alert('Siparişiniz alındı!');
-              }}
-            />
+            <Button title="Siparişi Tamamla" onPress={handleCompleteOrder} />
           </View>
         </>
       ) : (

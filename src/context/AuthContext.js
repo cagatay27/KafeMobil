@@ -15,9 +15,14 @@ export const AuthProvider = ({children}) => {
           .collection('users')
           .doc(user.uid)
           .get();
+
+        // Admin kontrolü
+        const isAdmin = user.email === 'admin@gmail.com';
+
         setUser({
           ...user,
           ...userDoc.data(),
+          isAdmin: isAdmin,
         });
       } else {
         setUser(null);
@@ -49,7 +54,15 @@ export const AuthProvider = ({children}) => {
 
   const signIn = async (email, password) => {
     try {
-      return await auth().signInWithEmailAndPassword(email, password);
+      const userCredential = await auth().signInWithEmailAndPassword(
+        email,
+        password,
+      );
+      // Admin kontrolü
+      if (email === 'admin@gmail.com' && password === '123456') {
+        return {...userCredential, isAdmin: true};
+      }
+      return userCredential;
     } catch (error) {
       throw error;
     }

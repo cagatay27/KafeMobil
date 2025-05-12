@@ -26,8 +26,14 @@ const LoginScreen = () => {
     }
     try {
       setLoading(true);
-      await signIn(email, password);
-      navigation.replace('App');
+      const userCredential = await signIn(email, password);
+
+      // Admin kontrolü
+      if (email === 'admin@gmail.com' && password === '123456') {
+        navigation.replace('AdminPanel');
+      } else {
+        navigation.replace('App');
+      }
     } catch (error) {
       Alert.alert('Hata', error.message);
     } finally {
