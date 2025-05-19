@@ -3,9 +3,10 @@ import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {COLORS} from '../styles/theme';
 import CustomText from '../components/atoms/Text/CustomText';
 import Button from '../components/atoms/Button/Button';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {useAuth} from '../context/AuthContext';
 import {useNavigation} from '@react-navigation/native';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faUser, faRightFromBracket} from '@fortawesome/free-solid-svg-icons';
 
 const ProfileScreen = () => {
   const {user, signOut} = useAuth();
@@ -24,7 +25,7 @@ const ProfileScreen = () => {
 
       <View style={styles.profileCard}>
         <View style={styles.profileInfo}>
-          <Icon name="person-circle-outline" size={80} color={COLORS.primary} />
+          <FontAwesomeIcon icon={faUser} size={80} color={COLORS.primary} />
           <CustomText type="title" style={styles.userName}>
             {user?.name || 'Kullanıcı'}
           </CustomText>
@@ -36,8 +37,8 @@ const ProfileScreen = () => {
           type="secondary"
           onPress={handleSignOut}
           icon={
-            <Icon
-              name="log-out-outline"
+            <FontAwesomeIcon
+              icon={faRightFromBracket}
               size={20}
               color={COLORS.primary}
               style={styles.buttonIcon}

@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Kullanıcı yetkisi kontrolü için fonksiyon
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Yorumlar koleksiyonu - tüm işlemlere izin ver (geçici olarak test için)
+    match /yorumlar/{yorumId} {
+      // Tüm okuma işlemlerine izin ver
+      allow read: if true;
+      
+      // Geçici olarak tüm yazma işlemlerine izin ver (test amaçlı)
+      allow write: if true;
+      
+      // Normal kullanımda aşağıdaki gibi olmalı:
+      // allow create: if isAuthenticated();
+      // allow update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+    
+    // Ürünler koleksiyonu - Okunabilir, yalnızca admin yazabilir
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                     request.auth.token.email == "admin@gmail.com"; // Admin kontrolü
+    }
+    
+    // Kullanıcılar koleksiyonu - Her kullanıcı sadece kendi belgesini okuyabilir/yazabilir
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && 
+                           request.auth.uid == userId;
+    }
+    
+    // Satışlar koleksiyonu - Sadece admin erişimi
+    match /satislar/{satisId} {
+      allow read: if isAuthenticated() && 
+                   (request.auth.token.email == "admin@gmail.com" || 
+                    resource.data.userId == request.auth.uid);
+      allow write: if isAuthenticated();
+    }
+  }
+} 

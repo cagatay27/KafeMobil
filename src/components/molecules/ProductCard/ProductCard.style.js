@@ -18,20 +18,47 @@ export default StyleSheet.create({
   },
   details: {
     padding: 10,
+    paddingBottom: 50,
   },
   price: {
     marginTop: 5,
     fontWeight: 'bold',
   },
-  addButton: {
+  buttonContainer: {
     position: 'absolute',
     bottom: 10,
     right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.primary,
+  },
+  favoriteButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    marginRight: 8,
+  },
+  commentButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    marginRight: 8,
   },
 });
